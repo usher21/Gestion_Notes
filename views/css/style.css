@@ -19,5 +19,6 @@
 }
 
 .modal-container {
-    background-color: #25003a2c;
+    background-color: #25003a64;
+    backdrop-filter: blur(5px);
 }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Page niveaux</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
+</head>
+
+<body class="body-home">
+    <header class="min-w-full w-full bg-white fixed shadow-md">
+        <nav class="flex items-center px-28 py-5">
+
+            <img src="../assets/img/7749636.jpg" alt="" class="w-12 cursor-pointer rounded-full">
+
+            <ul class="flex-1 text-center list-none">
+                <li class="px-8 py-2 inline-block rounded-lg hover:bg-cyan-600 nav-item">
+                    <a href="home.html" class="no-underline text-black text-lg">Accueil</a>
+                </li>
+                <li class="px-8 py-2 inline-block rounded-lg  hover:bg-cyan-600 nav-item">
+                    <a href="students.html" class="no-underline text-black text-lg">Élèves</a>
+                </li>
+                <li class="px-8 py-2 inline-block rounded-lg hover:bg-cyan-600 nav-item">
+                    <a href="classes.html" class="no-underline text-black text-lg">Classes</a>
+                </li>
+                <li class="px-8 py-2 inline-block rounded-lg bg-cyan-600 nav-item">
+                    <a href="levels.html" class="no-underline text-white text-lg">Niveaux</a>
+                </li>
+            </ul>
+
+            <i class="fa-solid fa-user text-black cursor-pointer text-3xl"></i>
+        </nav>
+    </header>
+
+    <main class="w-full h-screen pt-28">
+        <header class="flex items-center justify-between px-4 my-3">
+            <h1 class="text-2xl text-cyan-950">Liste des niveaux</h1>
+            <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-new-level">Ajouter un niveau</button>
+        </header>
+
+        <section class="w-full">
+            <ul class="grid grid-cols-4 w-full mt-8">
+                <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">#</li>
+                <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">Libellé</li>
+                <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">Groupe</li>
+                <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">Action</li>
+            </ul>
+    
+            <ul class="grid grid-cols-4 w-full">
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">1</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">CM2</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">Enseignement primaire</li>
+                <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
+                    <div class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer btn-edit">
+                        <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>
+                        <button class="text-cyan-950 text-lg inline-block">Modifier</button>
+                    </div>
+                    <i class="fa-solid fa-ellipsis text-cyan-950 text-3xl mr-6 cursor-pointer"></i>
+                </li>
+            </ul>
+
+            <ul class="grid grid-cols-4 w-full">
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">2</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">CP</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">Enseignement primaire</li>
+                <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
+                    <div class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer btn-edit">
+                        <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>
+                        <button class="text-cyan-950 text-lg inline-block">Modifier</button>
+                    </div>
+                    <i class="fa-solid fa-ellipsis text-cyan-950 text-3xl mr-6 cursor-pointer"></i>
+                </li>
+            </ul>
+
+            <ul class="grid grid-cols-4 w-full">
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">3</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">6e</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">Enseignement secondaire inférieur</li>
+                <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
+                    <div class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer btn-edit">
+                        <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>
+                        <button class="text-cyan-950 text-lg inline-block">Modifier</button>
+                    </div>
+                    <i class="fa-solid fa-ellipsis text-cyan-950 text-3xl mr-6 cursor-pointer"></i>
+                </li>
+            </ul>
+
+            <ul class="grid grid-cols-4 w-full">
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">4</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">4e</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">Enseignement secondaire inférieur</li>
+                <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
+                    <div class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer btn-edit">
+                        <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>
+                        <button class="text-cyan-950 text-lg inline-block">Modifier</button>
+                    </div>
+                    <i class="fa-solid fa-ellipsis text-cyan-950 text-3xl mr-6 cursor-pointer"></i>
+                </li>
+            </ul>
+
+            <ul class="grid grid-cols-4 w-full">
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">5</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">Seconde</li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3">Enseignement secondaire supérieur</li>
+                <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
+                    <div class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer btn-edit">
+                        <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>
+                        <button class="text-cyan-950 text-lg inline-block">Modifier</button>
+                    </div>
+                    <i class="fa-solid fa-ellipsis text-cyan-950 text-3xl mr-6 cursor-pointer"></i>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+    <div class="modal-container absolute top-0 w-full h-full flex items-center justify-center">
+        <span class="day" style="display: none;"></span>
+        <div class="modal w-1/2 h-2/5 rounded-lg bg-white shadow-lg">
+            <header class="modal-title text-2xl text-center my-3">Ajouter un nouveau</header>
+            
+            <main class="modal-body flex justify-between px-6 mt-8 overflow-scroll">
+                <section class="modal-body-section w-2/5">
+                    <div class="input-group w-full mb-12">
+                        <label for="" class="w-full text-lg mb-4 inline-block">Libellé</label>
+                        <input type="text" name="" id="" class="w-full px-8 py-2 rounded-lg border-2 border-slate-400" placeholder="Nom">
+                    </div>
+
+                    <div class="niveau w-2/5">
+                        <span class="text-lg">Goupe de niveau</span>
+                        <select name="" id="" class="w-80 px-4 py-2 mt-4">
+                            <option class="w-full">Choisir un groupe de niveau</option>
+                            <option class="w-full">Enseignement primaire</option>
+                            <option class="w-full">Enseignement secondaire inférieur</option>
+                            <option class="w-full">Enseignement secondaire supérieur</option>
+                        </select>
+                    </div>
+                    
+                </section>
+            </main>
+
+            <footer class="modal-footer w-full flex justify-end items-center py-3 mt-4 px-12">
+                <button class="cancel px-5 py-2 bg-red-700 text-white mr-10 rounded-lg">Annuler</button>
+                <button class="save px-5 py-2 bg-green-700 text-white rounded-lg">Enregistrer</button>
+            </footer>
+        </div>
+    </div>
+
+</body>
+
+</html>
