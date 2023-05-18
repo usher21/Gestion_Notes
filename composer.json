@@ -1,0 +1,17 @@
+{
+    "name": "usher21/projet_gestion_notes",
+    "description": "Application permettant de gérer les notes des élèves de l'école breukh's School et de l'ensemble des entités agissants sur l'école.",
+    "license": "ODC",
+    "autoload": {
+        "psr-4": {
+            "Model\\": "models/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mar Ndiaye",
+            "email": "mar.ndiaye221@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -34,7 +34,9 @@
                 </li>
             </ul>
 
-            <i class="fa-solid fa-user text-black cursor-pointer text-3xl"></i>
+            <div class="border-2 w-11 h-11 flex items-center justify-center border-cyan-950 rounded-full">
+                <i class="fa-solid fa-user text-black cursor-pointer text-3xl"></i>
+            </div>
         </nav>
     </header>
 
