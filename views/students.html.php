@@ -1,19 +1,10 @@
 <main class="w-full h-screen pt-28">
     <header class="flex items-center justify-between px-4 my-3">
-        <h1 class="text-2xl text-cyan-950">Liste des élèves</h1>
-        <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-new-student">Ajouter un nouveau
-            élève</button>
+        <h1 class="text-2xl text-cyan-950" id="mine">Liste des élèves</h1>
+        <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-new-student">
+            Ajouter un nouveau élève
+        </button>
     </header>
-
-    <?php
-
-    use Model\Managers\StudentManager;
-
-    $studentManager = new StudentManager;
-    $studentManager->loadStudents();
-    $students = $studentManager->getStudents();
-    
-    ?>
 
     <ul class="grid grid-cols-6 w-full mt-8">
         <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">Nom</li>
@@ -26,11 +17,11 @@
 
     <?php foreach($students as $student): ?>
         <ul class="grid grid-cols-6 w-full">
-            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->getLastName() ?></li>
-            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->getFirstName() ?></li>
-            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->getLevelName() ?></li>
-            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->getClassName() ?></li>
-            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->getType() ?></li>
+            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->lastname ?></li>
+            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->firstname ?></li>
+            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->level ?></li>
+            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->classe ?></li>
+            <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $student->type ?></li>
             <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
                 <div class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer btn-edit">
                     <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>

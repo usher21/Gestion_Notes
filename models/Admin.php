@@ -1,6 +1,8 @@
 <?php
 
-namespace Model\Entities;
+namespace Model;
+
+use Model\Database;
 
 class Admin
 {
@@ -36,5 +38,11 @@ class Admin
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public static function connect($phone, $password)
+    {
+        $request = "SELECT * FROM Admin WHERE phone = ? AND password = ?";
+        return Database::getInstance()->request($request, [$phone, $password]);
     }
 }

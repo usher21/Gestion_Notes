@@ -1,8 +1,8 @@
 <?php
 
-namespace Model\Entities;
+namespace Model;
 
-use DateTime;
+use Model\Database;
 
 class Student
 {
@@ -74,5 +74,34 @@ class Student
     public function getLevelName()
     {
         return $this->levelName;
+    }
+
+
+    public static function list()
+    {
+        $request = "SELECT
+                        firstname,
+                        lastname,
+                        type, birth_date,
+                        number, state,
+                        Student.id id,
+                        Classe.id id_classe,
+                        Classe.label as classe,
+                        Level.label as level,
+                        Level.id as id_level
+                        FROM
+                            Student
+                        JOIN Classe ON Classe.id = Student.id_classe
+                        JOIN Level ON Level.id = Student.id_level";
+                        
+        return Database::getInstance()->request($request);
+    }
+
+    public static function insert($firstName, $lastName, $idLevel, $idClasse, $type, $birthDate)
+    {
+        $request = "INSERT INTO Student(firstname, lastname, id_level, id_classe, type, birth_date)
+                    VALUES(?, ?, ?, ?, ?, ?)";
+        $bindValues = [$firstName, $lastName, $idLevel, $idClasse, $type, $birthDate];
+        return Database::getInstance()->request($request, $bindValues);
     }
 }

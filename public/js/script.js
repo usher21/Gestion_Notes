@@ -1,10 +1,10 @@
-const btnEdit = document.querySelectorAll('.btn-edit');
+const btnEdit = document.querySelectorAll('#btn-edit');
 const modalContainer = document.querySelector('.modal-container');
 const closeModal = document.querySelector('.cancel');
 const addNewStudentBtn = document.querySelector('#add-new-student')
 const addNewLevel = document.querySelector('#add-new-level');
 
-console.log(closeModal);
+console.log(btnEdit);
 
 for (const edit of btnEdit) {
     edit.addEventListener('click', () => {

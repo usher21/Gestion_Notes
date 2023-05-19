@@ -3,17 +3,7 @@
         <h1 class="text-2xl text-cyan-950">Liste des niveaux</h1>
         <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-new-level">Ajouter un niveau</button>
     </header>
-
-    <?php
-
-    use Model\Managers\LevelManager;
-
-    $levelManager = new LevelManager;
-    $levelManager->loadLevels();
-    $levels = $levelManager->getLevels();
-
-    ?>
-
+    
     <section class="w-full">
         <ul class="grid grid-cols-4 w-full mt-8">
             <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">#</li>
@@ -24,11 +14,13 @@
 
         <?php foreach ($levels as $level) : ?>
             <ul class="grid grid-cols-4 w-full">
-                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->getId() ?></li>
-                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->getLabel() ?></li>
-                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->getGroupName() ?></li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->id_level ?></li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->level ?></li>
+                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->group_name ?></li>
                 <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
-                    <div class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer btn-edit">
+                    <div
+                        class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer"
+                        id="btn-edit">
                         <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>
                         <button class="text-cyan-950 text-lg inline-block">Modifier</button>
                     </div>

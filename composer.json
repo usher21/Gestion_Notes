@@ -4,7 +4,9 @@
     "license": "ODC",
     "autoload": {
         "psr-4": {
-            "Model\\": "models/"
+            "Model\\": "models/",
+            "Router\\": "routers/",
+            "Controller\\": "controllers/"
         }
     },
     "authors": [

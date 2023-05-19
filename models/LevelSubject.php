@@ -1,6 +1,8 @@
 <?php
 
-namespace Model\Entities;
+namespace Model;
+
+use Model\Database;
 
 class LevelSubject
 {
@@ -36,5 +38,17 @@ class LevelSubject
     public function getState()
     {
         return $this->state;
+    }
+
+    public static function list()
+    {
+        $request = "SELECT * FROM  Subject";
+        return Database::getInstance()->request($request);
+    }
+
+    public static function insert($code, $label, $idSubjectGroup)
+    {
+        $request = "INSERT INTO Subject(code, label, id_subject_group) VALUES(?, ?, ?)";
+        return Database::getInstance()->request($request, [$code, $label, $idSubjectGroup]);
     }
 }
