@@ -1,69 +1,70 @@
-<main class="w-full h-screen pt-28">
+<?php
+    use Controller\Session;
+
+    Session::init();
+
+    if (!Session::isLogged()) {
+        header('Location:' . HOST . trim(ROOT_PATH['login']['view'], '/'));
+    }
+?>
+<main class="w-5/6 h-full shadow-xl rounded-lg p-4">
+    <?php if(isset($_SESSION['error'])) : ?>
+            <div class="bg-red-700 max-w-xl text-xl font-semibold relative left-1/2 mx-4 py-2
+                    rounded-lg text-center -z-10 -translate-x-1/2 text-white">
+                <?= $_SESSION['error'] ?>
+            </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif ?>
     <header class="flex items-center justify-between px-4 my-3">
-        <h1 class="text-2xl text-cyan-950">Liste des niveaux</h1>
-        <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-new-level">Ajouter un niveau</button>
+        <h1 class="text-2xl text-cyan-950 font-semibold">Liste des niveaux</h1>
+        <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-level">
+            Ajouter un niveau
+        </button>
     </header>
     
-    <section class="w-full">
-        <ul class="grid grid-cols-4 w-full mt-8">
-            <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">#</li>
-            <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">Libellé</li>
-            <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">Groupe</li>
-            <li class="text-lg text-white bg-slate-600 py-3 border-r-2 px-3">Action</li>
-        </ul>
-
+    <section class="w-full mt-12">
         <?php foreach ($levels as $level) : ?>
-            <ul class="grid grid-cols-4 w-full">
-                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->id_level ?></li>
-                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->level ?></li>
-                <li class="text-lg text-cyan-950 py-3 border-r-2 px-3"><?= $level->group_name ?></li>
-                <li class="text-lg text-cyan-950 py-3 px-3 flex items-center justify-between">
-                    <div
-                        class="flex items-center px-4 py-2 rounded-lg bg-yellow-500 shadow-sm cursor-pointer"
-                        id="btn-edit">
-                        <i class="fa-solid fa-pen-to-square text-cyan-950 text-2xl mr-4"></i>
-                        <button class="text-cyan-950 text-lg inline-block">Modifier</button>
-                    </div>
-                    <i class="fa-solid fa-ellipsis text-cyan-950 text-3xl mr-6 cursor-pointer"></i>
-                </li>
-            </ul>
+            <div class="grid grid-cols-1 w-full odd:bg-slate-300">
+                <a href="<?= HOST . trim(trim(ROOT_PATH['classe']['by-level'], '{param}'), '/')?>/<?= $level->id_level ?>"
+                    class="text-lg text-cyan-950 py-3 px-3
+                        hover:bg-slate-400 hover:cursor-pointer">
+                        <?= $level->level_name ?>
+                </a>
+            </div>
         <?php endforeach ?>
     </section>
 
 </main>
 
-<div class="modal-container hidden absolute top-0 w-full h-full flex items-center justify-center">
-    <span class="day" style="display: none;"></span>
-    <div class="modal w-1/2 h-2/5 rounded-lg bg-white shadow-lg">
-        <header class="modal-title text-2xl text-center my-3">Ajouter un nouveau</header>
+<form
+    action="<?= HOST . trim(ROOT_PATH['level']['add'], '/') ?>"
+    method="POST" id="form"
+    class="modal w-80 -right-80 duration-100 absolute h-52 rounded-lg shadow-lg p-3 opacity-0">
 
-        <main class="modal-body flex justify-between px-6 mt-8 overflow-scroll">
-            <section class="modal-body-section w-2/5">
-                <div class="input-group w-full mb-12">
-                    <label for="" class="w-full text-lg mb-4 inline-block">Libellé</label>
-                    <input
-                        type="text"
-                        name="" id=""
-                        class="w-full px-8 py-2 rounded-lg border-2 border-slate-400"
-                        placeholder="Nom">
-                </div>
+    <span class="absolute right-3 top-3 bg-red-700 w-10 rounded-md text-xl h-6 cursor-pointer
+                 flex items-center justify-center text-white"
+          id="closeModal">
+        &times;
+    </span>
 
-                <div class="niveau w-2/5">
-                    <span class="text-lg">Goupe de niveau</span>
-                    <select name="" id="" class="w-80 px-4 py-2 mt-4">
-                        <option class="w-full">Choisir un groupe de niveau</option>
-                        <option class="w-full">Enseignement primaire</option>
-                        <option class="w-full">Enseignement secondaire inférieur</option>
-                        <option class="w-full">Enseignement secondaire supérieur</option>
-                    </select>
-                </div>
-
-            </section>
-        </main>
-
-        <footer class="modal-footer w-full flex justify-end items-center py-3 mt-4 px-12">
-            <button class="cancel px-5 py-2 bg-red-700 text-white mr-10 rounded-lg">Annuler</button>
-            <button class="save px-5 py-2 bg-green-700 text-white rounded-lg">Enregistrer</button>
-        </footer>
+    <div class="input-group mt-6 w-full">
+        <label for="level-label" class="w-full text-xl inline-block">Libellé</label>
+        <input
+            type="text"
+            name="label" id="level-label"
+            class="w-full px-8 py-2 my-4 rounded-lg border-2 border-slate-400"
+            placeholder="Libellé">
+        <span id="alert-level" class="text-red-700 text-sm hidden">
+            Veuillez remplir le libellé du niveau
+        </span>
     </div>
+
+    <button type="submit"
+            class="px-5 py-3 bg-slate-700 w-full text-white rounded-md"
+            id="save">
+        Enregistrer
+    </button>
 </div>
+
+<script src="<?= HOST ?>js/level.js"></script>
+

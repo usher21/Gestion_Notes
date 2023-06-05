@@ -1,8 +1,10 @@
 <?php
 
+namespace Controller;
+
 class Session
 {
-    public function init()
+    public static function init()
     {
         if (!session_id()) {
             session_start();
@@ -12,7 +14,7 @@ class Session
 
     /*--------------------------------------------------------------------------------------------------*/
 
-    public function cleanSession()
+    public static function clean()
     {
         session_unset();
         session_destroy();
@@ -20,11 +22,11 @@ class Session
 
     /*--------------------------------------------------------------------------------------------------*/
 
-    public function isLogged(): bool
+    public static function isLogged(): bool
     {
         if (
-            isset($_SESSION['user_phone']) &&
-            !empty($_SESSION['user_phone']) &&
+            isset($_SESSION['user_login']) &&
+            !empty($_SESSION['user_login']) &&
             isset($_SESSION['user_passwd']) &&
             !empty($_SESSION['user_passwd'])
         ) {

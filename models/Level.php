@@ -6,49 +6,110 @@ use Model\Database;
 
 class Level
 {
-    public function __construct(
-        private int $id,
-        private string $label,
-        private int $idGroup,
-        private string $groupName
-    ) {
-    }
+    private \PDO $db;
 
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $database = new Database;
+        $this->db = $database->getConnection();
     }
 
-    public function getLabel(): string
-    {
-        return $this->label;
-    }
-
-    public function getIdGroup(): int
-    {
-        return $this->idGroup;
-    }
-
-    public function getGroupName()
-    {
-        return $this->groupName;
-    }
-
-    public static function list()
+    public function list()
     {
         $request = "SELECT
                         Level.id as id_level,
-                        Level.label as level,
-                        LevelGroup.id as id_group,
-                        LevelGroup.label as group_name
-                        FROM  Level
-                        JOIN LevelGroup ON LevelGroup.id = Level.id_group";
-        return Database::getInstance()->request($request);
+                        Level.label as level_name
+                    FROM
+                        Level, SchoolYear_Level
+                    WHERE SchoolYear_Level.id_level = Level.id AND
+                    SchoolYear_Level.id_school_year = (SELECT id FROM SchoolYear WHERE status = 1 LIMIT 1)
+                    ORDER BY Level.id ASC";
+
+        $requestPrepared = $this->db->prepare($request);
+
+        if ($requestPrepared->execute()) {
+            return $requestPrepared->fetchAll(\PDO::FETCH_OBJ);
+        }
+
+        return [];
     }
 
-    public static function insert($label, $idGroup)
+    public function insert($label)
     {
-        $request = "INSERT INTO Level (label, id_group) VALUES(?, ?)";
-        return Database::getInstance()->request($request, [$label, $idGroup]);
+        $this->db->beginTransaction();
+        try {
+            $request = "INSERT INTO Level (label) VALUES(?)";
+            $requestPrepared = $this->db->prepare($request);
+            $requestPrepared->bindValue(1, $label);
+            $requestPrepared->execute();
+
+            $request = "INSERT INTO
+                            SchoolYear_Level(id_school_year, id_level)
+                            VALUES
+                                (
+                                    (
+                                        SELECT id
+                                        FROM
+                                            SchoolYear
+                                        WHERE
+                                            status = 1 LIMIT 1
+                                    ),
+                                    LAST_INSERT_ID()
+                                )";
+            $requestPrepared = $this->db->prepare($request);
+            $requestPrepared->execute();
+            $this->db->commit();
+            return true;
+        } catch (\PDOException $exception) {
+            echo 'Erreur: ' . $exception->getMessage();
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function lastInsertId()
+    {
+        $request = "SELECT id FROM Level WHERE id = LAST_INSERT_ID()";
+        $requestPrepared = $this->db->prepare($request);
+
+        if ($requestPrepared->execute()) {
+            return $requestPrepared->fetch(\PDO::FETCH_OBJ);
+        }
+
+        return 0;
+    }
+
+    public function findByLabel($levelLabel)
+    {
+        $request = "SELECT label FROM Level WHERE label = ?";
+
+        $requestPrepared = $this->db->prepare($request);
+        $requestPrepared->bindValue(1, $levelLabel);
+        $requestPrepared->execute();
+
+        return $requestPrepared->fetch(\PDO::FETCH_OBJ);
+    }
+
+    public function getClassNameById($idLevel)
+    {
+        $request = "SELECT label FROM Level WHERE id = ?";
+        $requestPrepared = $this->db->prepare($request);
+        $requestPrepared->bindValue(1, $idLevel);
+        $requestPrepared->execute();
+        return $requestPrepared->fetch(\PDO::FETCH_OBJ);
+    }
+
+    public function getLevelNameByClassId($idClasse)
+    {
+        $request = "SELECT
+                        Level.label AS label,
+                        Level.id AS id
+                    FROM
+                        Classe JOIN Level ON Level.id = Classe.id_level
+                        WHERE Classe.id = ?";
+        $requestPrepared = $this->db->prepare($request);
+        $requestPrepared->bindValue(1, $idClasse);
+        $requestPrepared->execute();
+        return $requestPrepared->fetch(\PDO::FETCH_OBJ);
     }
 }

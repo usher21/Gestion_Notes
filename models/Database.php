@@ -2,30 +2,38 @@
 
 namespace Model;
 
-use PDOException;
+use Controller\Exception\FileNotFoundException;
 
 class Database
 {
-    const HOSTNAME = '127.0.0.1';
-    const DB_NAME = 'Gestion_Note';
-    const USERNAME = 'mar';
-    const PASSWORD = '#Coding221';
+    private const DB_FILE = __DIR__ . "/../config/settings.ini";
 
     private $db;
+
     private $options = [
         \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
         \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-        \PDO::ATTR_EMULATE_PREPARES => false
+        \PDO::ATTR_EMULATE_PREPARES => false,
+        \PDO::ATTR_PERSISTENT => true
     ];
 
     public function __construct()
     {
+        if (!$settings = parse_ini_file(self::DB_FILE)) {
+            throw new FileNotFoundException("Impossible d'ouvrir " . self::DB_FILE . ' -> fichier introuvable !');
+        }
+
         try {
-            $dsn = 'mysql:host=' . self::HOSTNAME . ';dbname=' . self::DB_NAME;
-            $this->db = new \PDO($dsn, self::USERNAME, self::PASSWORD, $this->options);
-        } catch (PDOException $exception) {
+            $dsn = 'mysql:host=' . $settings['hostname'] . ';dbname=' . $settings['schema'];
+            $this->db = new \PDO($dsn, $settings['username'], $settings['passwd'], $this->options);
+        } catch (\PDOException $exception) {
             echo 'Impossible de se connecter à la base de donnée -> ' . $exception->getMessage();
         }
+    }
+
+    public function getConnection()
+    {
+        return $this->db;
     }
 
     public function request(string $request, $data = [])

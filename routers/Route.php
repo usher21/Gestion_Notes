@@ -6,6 +6,7 @@ class Route
 {
     private string $path;
     private string $action;
+    private array $params;
     
     public function __construct(string $path, string $action)
     {
@@ -16,13 +17,17 @@ class Route
     public function resolve(string $url)
     {
         $requestPath = trim($url, '/');
-        $requestController = explode('/', $requestPath)[0];
-        $requestFeature = explode('/', $requestPath)[1];
+        $requestParts = explode('/', $requestPath);
+        $pathParts = explode('/', $this->path);
 
-        $controller = explode('/', $this->path)[0];
-        $feature = explode('/', $this->path)[1];
-        
-        if ($requestController === $controller && $requestFeature === $feature) {
+        if (count($requestParts) != count($pathParts)) {
+            return false;
+        }
+
+        $path = preg_replace("#\{([\w]+)\}#", "([^/]+)", $this->path);
+
+        if (preg_match("#^$path$#", $requestPath, $matches)) {
+            $this->params = $matches;
             return true;
         }
 
@@ -31,9 +36,14 @@ class Route
 
     public function execute()
     {
-        $params = explode('@', $this->action);
-        $controller = new $params[0]();
-        $method = $params[1];
-        $controller->$method();
+        $actions = explode('@', $this->action);
+        $controller = new $actions[0]();
+        $method = $actions[1];
+        
+        if (isset($this->params) && isset($this->params['1'])) {
+            $controller->$method($this->params[1]);
+        } else {
+            $controller->$method();
+        }
     }
 }

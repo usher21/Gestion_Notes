@@ -1,3 +1,8 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+}
+
 .contain {
     background-color: #f1f1f1;
 }
@@ -23,11 +28,45 @@
     backdrop-filter: blur(5px);
 }
 
-#mine {
-    background-color: aqua;
+#year-container:hover #trash-icon,
+#year-container:hover #edit-year,
+#year-container:hover #enable-year
+{
+    display: block;
 }
 
-.para {
-    font-size: 3rem;
-    color: red;
+#edit-year-input {
+    outline: none;
+}
+
+#edit-year-input:focus {
+    outline: none;
+}
+
+#year_label:focus {
+    outline: none;
+}
+
+.modal {
+    height: 650px;
+    background-color: transparent;
+}
+
+.modal .modal-title {
+    height: 10%;
+    background-color: rgba(8, 51, 68, 0.746);
+}
+
+.modal .modal-footer {
+    height: 10%;
+    background-color: rgba(8, 51, 68, 0.746);
+}
+
+.modal .modal-body {
+    height: 80%;
+    background-color: #ffffff8c;
+}
+
+input[disabled] {
+    background-color: rgb(234, 231, 231);
 }

@@ -4,7 +4,7 @@ const closeModal = document.querySelector('.cancel');
 const addNewStudentBtn = document.querySelector('#add-new-student')
 const addNewLevel = document.querySelector('#add-new-level');
 
-console.log(btnEdit);
+console.log(modalContainer);
 
 for (const edit of btnEdit) {
     edit.addEventListener('click', () => {
