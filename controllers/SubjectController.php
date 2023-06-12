@@ -32,6 +32,17 @@ class SubjectController
         require_once VIEWS . DIRECTORY_SEPARATOR . 'template.html.php';
     }
 
+    public function renderCoef($idClasse)
+    {
+        ob_start();
+        $subjects = $this->subject->findInClasse($idClasse);
+        $className = $subjects[0]->classe;
+        // echo json_encode($subjects);
+        require_once VIEWS . DIRECTORY_SEPARATOR . 'subjectsInClasse.html.php';
+        $content = ob_get_clean();
+        require_once VIEWS . DIRECTORY_SEPARATOR . 'template.html.php';
+    }
+
     public function all()
     {
         header(self::JSON_CONTENT_TYPE);
@@ -79,10 +90,12 @@ class SubjectController
             $subjectsSubjectsId = [];
             $subjects = explode(',', $subject->subjects);
             $idSubjects = explode(',', $subject->id_subjects);
+            $subjectCodes = explode(',', $subject->subject_codes);
             for ($i=0; $i < count($subjects); $i++) {
                 $tab = [
                     "subject_name" => $subjects[$i],
-                    "subject_id" => $idSubjects[$i]
+                    "subject_id" => $idSubjects[$i],
+                    "subject_code" => $subjectCodes[$i]
                 ];
                 $subjectsSubjectsId[] = $tab;
             }
@@ -109,7 +122,7 @@ class SubjectController
                 $lastInsertData = $this->subject->findByLabel($data['label']);
                 ResponseController::generate(
                     http_response_code(),
-                    "Données enregistrées avec succès",
+                    "Une nouvelle discipline a été ajouté dans cette classe",
                     $lastInsertData
                 );
             } else {
@@ -129,7 +142,7 @@ class SubjectController
             $subjectInClasse = $this->subject->getByClasseId($data['label'], $data['idClasse']);
             ResponseController::generate(
                 http_response_code(),
-                "Données enregistrées avec succès",
+                "Une nouvelle discipline a été ajouté dans cette classe",
                 $subjectInClasse
             );
             return;
@@ -154,8 +167,9 @@ class SubjectController
     public function generateCode(string $subject) : string
     {
         $code = "";
+        $subject = trim($subject, ' ');
 
-        if (strpos(trim($subject, ' '), ' ')) {
+        if (strpos($subject, ' ')) {
             $labelParts = explode(' ', $subject);
             
             foreach ($labelParts as $part) {
@@ -171,11 +185,15 @@ class SubjectController
             return $code;
         }
 
-        $code = strtoupper(substr($subject, 0, 3));
-        
-        if ($this->codeExists($code)) {
-            $code .= strtoupper(substr($subject, 3, 1));
-        }
+        $codeFounded = false;
+        $start = 0;
+        $end = 3;
+
+        do {
+            $code = strtoupper(substr($subject, $start, $end));
+            $codeFounded = $this->codeExists($code);
+            $end++;
+        } while ($codeFounded);
 
         return $code;
     }
@@ -183,7 +201,32 @@ class SubjectController
     public function deleteFromClasse($idClasse)
     {
         $idSubjects = explode(',', $_POST['idSubjects']);
-        array_push($idSubjects, $idClasse);
-        ResponseController::generate(200, "Données à supprimer", $idSubjects);
+        $deletedData = [];
+
+        foreach ($idSubjects as $idSubject) {
+            $data = $this->subject->findById($idSubject, $idClasse);
+            $deletedData[] = $data;
+        }
+
+        if ($this->subject->removeAssocWithClasse($idClasse, $idSubjects)) {
+            ResponseController::generate(
+                200,
+                count($idSubjects) > 1 ?
+                    "Des disciplines ont étés retirées depuis cette classe"
+                    :
+                    "Une discipline a été retirée depuis cette classe",
+                $deletedData
+            );
+        }
+    }
+
+    public function updateMaxNote()
+    {
+        $data = json_decode(file_get_contents('php://input'));
+        
+        if ($data && $this->subject->updateNoteMax(is_array($data) ? $data : [$data])) {
+            $dataUpdated = $this->subject->findSubjectClasse(implode(",", array_column($data, 'id')));
+            ResponseController::generate(200, "Données mises à jours", $dataUpdated);
+        }
     }
 }

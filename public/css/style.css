@@ -70,3 +70,35 @@ body {
 input[disabled] {
     background-color: rgb(234, 231, 231);
 }
+
+.alert.active {
+    animation: appear .5s ease forwards;
+}
+
+.alert.inactive {
+    animation: disappear .5s ease forwards;
+}
+
+@keyframes appear {
+    0% {
+        left: -672px;
+    } 40% {
+        left: 15px;
+    } 80% {
+        left: -15px;
+    } 100% {
+        left: 12px;
+    }
+}
+
+@keyframes disappear {
+    0% {
+        left: 0px;
+    } 40% {
+        left: -25px;
+    } 80% {
+        left: 25px;
+    } 100% {
+        left: -672px;
+    }
+}

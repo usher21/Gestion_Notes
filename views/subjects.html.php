@@ -133,10 +133,15 @@
     </form>
 </div>
 
-<div class="alert max-w-2xl flex items-center justify-between absolute bottom-8 left-3 p-6 rounded-lg bg-white shadow-2xl border-l-4 border-green-500">
+<div
+    class="alert -left-3/4 max-w-2xl flex items-center justify-between fixed bottom-8 p-6
+           rounded-lg bg-white shadow-2xl border-l-4 border-green-500">
     <i class="fa-sharp fa-solid fa-circle-check mr-4 text-green-500 text-2xl"></i>
-    <span class="text-lg">Disciplines supprimées avec succès</span>
-    <span class="text-3xl text-red-700/80 ml-4 cursor-pointer">&times;</span>
+    <div class="flex flex-col">
+        <h3 class="text-lg font-semibold" id="title">Licence 1: mise à jour efféctuée</h3>
+        <span class="text-sm" id="content">Des disciplines ont étés supprimées depuis cette classe</span>
+    </div>
+    <span class="text-3xl text-red-700/80 ml-4 cursor-pointer" id="closeAlert">&times;</span>
 </div>
 
 <script src="<?= HOST ?>js/subject/main.js" type="module"></script>

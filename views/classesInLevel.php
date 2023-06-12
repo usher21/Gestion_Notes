@@ -7,7 +7,7 @@
         header('Location:' . HOST . trim(ROOT_PATH['login']['view'], '/'));
     }
 ?>
-<main class="w-3/5 ml-96 max-h-max shadow-xl rounded-lg p-4">
+<main class="w-11/12 ml-4 max-h-max shadow-xl rounded-lg p-4">
     <header class="flex items-center justify-between px-4 my-3 mb-12">
         <h1 class="text-2xl text-cyan-950 font-semibold">Liste des classe <?= strtolower($levelName) . 's' ?></h1>
         <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-classe">
@@ -17,7 +17,7 @@
 
     <?php foreach($classes as $classe): ?>
         <div class="grid grid-cols-1 w-full even:bg-slate-300">
-            <a href="<?= HOST .  trim(trim(ROOT_PATH['student']['in-classe'], '{param}'), '/') ?>/<?= $classe->id_classe ?>"
+            <a href="<?= HOST . trim(trim(ROOT_PATH['student']['in-classe'], '{param}'), '/') ?>/<?= $classe->id_classe ?>"
             class="text-lg text-cyan-950 py-3 px-3">
                 <?= $classe->classe ?>
             </a>
@@ -29,7 +29,7 @@
 <form
     action="<?= HOST . trim(ROOT_PATH['classe']['add'], '/') ?>"
     method="POST" id="form"
-    class="modal w-80 -right-80 duration-100 absolute h-80 rounded-lg shadow-lg p-3 opacity-0">
+    class="modal w-80 -right-80 duration-100 absolute h-80 rounded-lg shadow-lg p-3 opacity-0 bg-white">
 
     <span class="absolute right-3 top-3 bg-red-700 w-10 rounded-md text-xl h-6 cursor-pointer
                  flex items-center justify-center text-white"

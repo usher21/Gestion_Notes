@@ -65,15 +65,18 @@ export function handleSubjectGroupAdd(response, {selectSubjectGroup, subjectGrou
 
 export async function handleSubjectAdd(newSubject, idClasse, subjectGroupContainer, subjectError, URL, updateBtn) {
     if (newSubject.statusCode == 200) {
+        console.log(newSubject);
         clearElementContainer(subjectGroupContainer);
         const subjectGroups = await fetchData(URL.HOST + URL.GET_SUBJECT + idClasse, {method: 'GET'});
         handleSubjectGet(subjectGroups, subjectGroupContainer, null, updateBtn);
     } else {
         subjectError.innerText = newSubject.message;
+        console.log(newSubject);
     }
 }
 
 export function handleSubjectGet(subjectGroups, subjectGroupContainer, deletedInfo, updateBtn) {
+    clearElementContainer(subjectGroupContainer);
     if (subjectGroups.statusCode === 204) {
         deletedInfo.classList.add('hidden');
         const emptyMessage = createElement('div', {
@@ -91,5 +94,22 @@ export function handleSubjectGet(subjectGroups, subjectGroupContainer, deletedIn
         const subjectContainer = createSubjectContainer(group_name[i], subjects_ids[j], {updateBtn, subjectGroupContainer});
         subjectGroupContainer.appendChild(subjectContainer);
     }
+}
+
+export function activeAlert(alertContainer, title, content) {
+    alertContainer.classList.remove("inactive");
+    alertContainer.classList.add("active");
+    alertContainer.querySelector('#title').innerText = title
+    alertContainer.querySelector('#content').innerText = content
+
+    setTimeout(() => {
+        alertContainer.classList.remove("active");
+        alertContainer.classList.add("inactive");
+    }, 5000);
+
+    alertContainer.querySelector('#closeAlert').addEventListener('click', () => {
+        alertContainer.classList.remove("active");
+        alertContainer.classList.add("inactive");
+    })
 }
 

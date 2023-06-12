@@ -7,9 +7,9 @@
         header('Location:' . HOST . trim(ROOT_PATH['level']['list']));
     }
 ?>
-<div class="bg-white shadow-xl w-4/6 bloc-contain rounded-lg flex relative left-1/2 -translate-x-1/2">
+<div class="bg-white shadow-xl w-4/6 min-h-max bloc-contain rounded-lg flex relative left-1/2 -translate-x-1/2">
     <div class="h-full bg-slate-400 w-2/4 bg-[url('../assets/img/7749636.jpg')] bg-center bg-cover"></div>
-    <div class="h-full w-2/4">
+    <div class="min-h-max max-h-max h-full w-2/4">
         <h1 class="text-4xl font-semibold text-center mt-20">Bienvenue</h1>
         <form method="post" action="<?= HOST . trim(ROOT_PATH['login']['check'], '/') ?>"
                 class="w-full flex flex-col items-center mt-20"

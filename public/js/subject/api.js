@@ -56,8 +56,8 @@ export function createSubjectContainer(subjectGroupName, subjects, {updateBtn, s
 
     container.appendChild(legend);
 
-    for (const {subject_name, subject_id} of subjects) {
-        const subjectItem = createSubjectItem(subject_name, subject_id, {updateBtn, subjectGroupContainer});
+    for (const {subject_name, subject_id, subject_code} of subjects) {
+        const subjectItem = createSubjectItem(subject_name, subject_id, subject_code, {updateBtn, subjectGroupContainer});
         container.appendChild(subjectItem);
     }
 
@@ -66,7 +66,7 @@ export function createSubjectContainer(subjectGroupName, subjects, {updateBtn, s
 
 /*----------------------------------------------------------------------------------------------------*/
 
-export function createSubjectItem(subjectName, subjectId, {updateBtn, subjectGroupContainer}) {
+export function createSubjectItem(subjectName, subjectId, subjectCode, {updateBtn, subjectGroupContainer}) {
     const itemContainer = createElement('div', { class: 'mb-2' });
 
     const checkbox = createElement('input', {
@@ -81,7 +81,7 @@ export function createSubjectItem(subjectName, subjectId, {updateBtn, subjectGro
     const label = createElement('label', {
         for: 'item-check' + subjectId,
         class: 'text-lg'
-    }, subjectName);
+    }, `${subjectName} (${subjectCode})`);
 
     itemContainer.appendChild(checkbox);
     itemContainer.appendChild(label);

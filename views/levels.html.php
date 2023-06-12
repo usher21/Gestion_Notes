@@ -7,7 +7,8 @@
         header('Location:' . HOST . trim(ROOT_PATH['login']['view'], '/'));
     }
 ?>
-<main class="w-5/6 h-full shadow-xl rounded-lg p-4">
+
+<main class="w-11/12 h-full shadow-xl rounded-lg p-4">
     <?php if(isset($_SESSION['error'])) : ?>
             <div class="bg-red-700 max-w-xl text-xl font-semibold relative left-1/2 mx-4 py-2
                     rounded-lg text-center -z-10 -translate-x-1/2 text-white">
@@ -39,7 +40,7 @@
 <form
     action="<?= HOST . trim(ROOT_PATH['level']['add'], '/') ?>"
     method="POST" id="form"
-    class="modal w-80 -right-80 duration-100 absolute h-52 rounded-lg shadow-lg p-3 opacity-0">
+    class="modal w-80 -right-80 duration-100 absolute h-52 rounded-lg shadow-lg p-3 opacity-0 bg-white">
 
     <span class="absolute right-3 top-3 bg-red-700 w-10 rounded-md text-xl h-6 cursor-pointer
                  flex items-center justify-center text-white"

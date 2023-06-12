@@ -6,7 +6,7 @@ for (const editYear of editYears) {
         e.preventDefault();
         this.nextElementSibling.classList.remove('hidden');
         this.nextElementSibling.focus();
-        this.nextElementSibling.value = this.parentElement.innerText;
+        this.nextElementSibling.value = this.parentElement.getAttribute('data-label');
     })
 }
 

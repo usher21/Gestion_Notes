@@ -6,15 +6,24 @@
     if (!Session::isLogged()) {
         header('Location:' . HOST . trim(ROOT_PATH['login']['view'], '/'));
     }
+    $idClasse = explode('/', $_SERVER['REQUEST_URI'])[count(explode('/', $_SERVER['REQUEST_URI'])) - 1];
 ?>
 <main class="w-11/12 max-h-max">
     <header class="flex items-center justify-between px-4 my-3 mb-12">
         <h1 class="text-2xl text-cyan-950 font-semibold" id="mine">
             Liste des élèves de la classe <?= $classeName ?>
         </h1>
-        <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-new-student">
-            Ajouter un nouveau élève
-        </button>
+
+        <div>
+            <a href="<?= HOST . trim(trim(ROOT_PATH['coef']['in-classe'], '/'), '{param}') . $idClasse ?>"
+                class="px-8 mr-2 rounded-lg py-3 bg-cyan-800 text-white">
+                Disciplines
+            </a>
+            
+            <button class="px-8 rounded-lg py-3 bg-cyan-950 text-white" id="add-new-student">
+                Ajouter un nouveau élève
+            </button>
+        </div>
     </header>
 
     <?php foreach ($students as $student) : ?>
@@ -135,7 +144,7 @@
                            disabled placeholder="<?= $classeName ?>" value="">
                     <input type="hidden" class="hidden"
                            id="id_classe" name="id_classe"
-                           value="<?= explode('/', $_SERVER['REQUEST_URI'])[count(explode('/', $_SERVER['REQUEST_URI'])) - 1] ?>">
+                           value="<?= $idClasse ?>">
                 </div>
             </div>
 

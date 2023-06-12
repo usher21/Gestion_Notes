@@ -58,6 +58,9 @@ $router->get(ROOT_PATH['subject']['in-classe'], 'Controller\SubjectController@by
 $router->post(ROOT_PATH['subject']['add'], 'Controller\SubjectController@insert');
 $router->post(ROOT_PATH['subject']['delete'], 'Controller\SubjectController@deleteFromClasse');
 
+$router->get(ROOT_PATH['coef']['in-classe'], 'Controller\SubjectController@renderCoef');
+$router->post(ROOT_PATH['coef']['add'], 'Controller\SubjectController@updateMaxNote');
+
 $requestPath = explode('?', $_SERVER['REQUEST_URI'])[0];
 $router->handleRequest($requestPath);
 

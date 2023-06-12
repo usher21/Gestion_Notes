@@ -37,7 +37,6 @@
 HTML;
         unset($_SESSION['error']);
     }
-    
     ?>
 
     <section class="w-11/12 rounded-lg shadow-lg
@@ -49,7 +48,7 @@ HTML;
                         <?= $schoolYear->status == 1 ? 'bg-green-700 text-white' : '' ?>
                         <?= $schoolYear->status == 0 ? 'hover:bg-cyan-900 hover:text-white' : '' ?>
                         cursor-pointer mr-16 my-16 shadow-lg rounded-lg"
-                        id="year-container" data-id=<?= $schoolYear->id ?>>
+                        id="year-container" data-id=<?= $schoolYear->id ?> data-label="<?= $schoolYear->label ?>">
                 <?= $schoolYear->label ?>
                 
                 <a href="<?= HOST . trim(ROOT_PATH['schoolyear']['edit'], '/') ?>"
@@ -57,9 +56,14 @@ HTML;
                           text-2xl text-yellow-500 hidden" id="edit-year">
                 </a>
 
+                <input type="text" class="w-full px-1 py-4 text-center text-black text-xl
+                        absolute top-16 border-0 hidden"
+                        id="edit-year-input"
+                        placeholder="Entrer la nouvelle année">
+                        
                 <?php if($schoolYear->status == 0): ?>
                     <a href="<?= HOST . trim(trim(ROOT_PATH['schoolyear']['enable'], '{param}'), '/') . '/' ?><?= $schoolYear->id ?>"
-                    class="absolute top-3 right-24 px-3 py-1 rounded-lg
+                    class="absolute top-3 left-2 px-3 py-1 rounded-lg
                             text-sm text-cyan-950 bg-slate-200 hidden" id="enable-year">
                         activer
                     </a>
@@ -70,10 +74,6 @@ HTML;
                     </a>
                 <?php endif ?>
 
-                <input type="text" class="w-full px-1 py-4 text-center text-black text-xl
-                               absolute top-16 border-0 hidden"
-                               id="edit-year-input"
-                               placeholder="Entrer la nouvelle année">
             </div>
         <?php endforeach ?>
     </section>

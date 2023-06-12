@@ -33,6 +33,29 @@ class Subject
         return $requestPrepared->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    public function findById($idSubject, $idClasse)
+    {
+        $request = "SELECT
+                        Subject.id AS id,
+                        Subject.code AS code,
+                        Subject.label AS subject,
+                        SchoolYear.label AS school_year,
+                        Classe.label AS classe
+                    FROM Subject_Classe
+                        JOIN Subject ON Subject.id = Subject_Classe.id_subject
+                        JOIN Classe ON Classe.id = Subject_Classe.id_classe
+                        JOIN Subject_SchoolYear ON Subject_SchoolYear.id_subject = Subject.id
+                        JOIN SchoolYear ON SchoolYear.id = Subject_SchoolYear.id_school_year
+                    WHERE
+                        SchoolYear.id = (SELECT id FROM SchoolYear WHERE status = 1 LIMIT 1)
+                        AND Subject.id = ? AND Classe.id = ?";
+        $requestPrepared = $this->db->prepare($request);
+        $requestPrepared->bindValue(1, $idSubject);
+        $requestPrepared->bindValue(2, $idClasse);
+        $requestPrepared->execute();
+        return $requestPrepared->fetch(\PDO::FETCH_OBJ);
+    }
+
     public function findInClasse($idClasse)
     {
         $request = "SELECT
@@ -41,7 +64,10 @@ class Subject
                         Subject.label AS subject,
                         Subject.id_subject_group AS subject_group,
                         Classe.label AS classe,
-                        SchoolYear.label AS school_year
+                        Subject_Classe.ressource AS ressource,
+                        Subject_Classe.examen AS examen,
+                        SchoolYear.label AS school_year,
+                        Subject_Classe.id AS id_subject_classe
                     FROM Subject_Classe
                         JOIN Subject ON Subject.id = Subject_Classe.id_subject
                         JOIN Classe ON Classe.id = Subject_Classe.id_classe
@@ -49,8 +75,7 @@ class Subject
                         JOIN SchoolYear ON SchoolYear.id = Subject_SchoolYear.id_school_year
                     WHERE
                         Classe.id = ? AND
-                        SchoolYear.id = (SELECT id FROM SchoolYear WHERE status = 1 LIMIT 1)
-                        AND subject_group is NOT NULL";
+                        SchoolYear.id = (SELECT id FROM SchoolYear WHERE status = 1 LIMIT 1)";
 
         $requestPrepared = $this->db->prepare($request);
         $requestPrepared->bindValue(1, $idClasse);
@@ -63,7 +88,8 @@ class Subject
         $request = "SELECT
                         COALESCE(SubjectGroup.label, 'Autre') AS 'subject_groups',
                         GROUP_CONCAT(Subject.label) AS 'subjects',
-                        GROUP_CONCAT(Subject.id) AS id_subjects
+                        GROUP_CONCAT(Subject.id) AS id_subjects,
+                        GROUP_CONCAT(Subject.code) AS subject_codes
                     FROM Subject_Classe
                         JOIN Subject ON Subject.id = Subject_Classe.id_subject
                         LEFT JOIN SubjectGroup ON Subject.id_subject_group = SubjectGroup.id
@@ -111,19 +137,12 @@ class Subject
         $request = "SELECT
                         Subject.id AS id,
                         Subject.code AS code,
-                        Subject.label AS subject,
-                        Classe.label AS classe,
-                        SubjectGroup.label AS subject_group,
-                        SchoolYear.label AS school_year
-                    FROM Subject_Classe
-                        JOIN Subject ON Subject.id = Subject_Classe.id_subject
-                        JOIN SubjectGroup ON SubjectGroup.id = Subject.id_subject_group
-                        JOIN Classe ON Classe.id = Subject_Classe.id_classe
-                        JOIN Subject_SchoolYear ON Subject_SchoolYear.id_subject = Subject.id
-                        JOIN SchoolYear ON SchoolYear.id = Subject_SchoolYear.id_school_year
+                        Subject.label AS subject
+                    FROM
+                        Subject
                     WHERE
-                        Subject.label = ? AND
-                        SchoolYear.id = (SELECT id FROM SchoolYear WHERE status = 1 LIMIT 1)";
+                        Subject.label = ?";
+
         $requestPrepared = $this->db->prepare($request);
         $requestPrepared->bindValue(1, $label);
         $requestPrepared->execute();
@@ -251,5 +270,44 @@ class Subject
             echo 'Erreur: ' . $exception->getMessage();
             return false;
         }
+    }
+
+    public function updateNoteMax($rows)
+    {
+        $request = "UPDATE Subject_Classe SET ressource = ?, examen = ? WHERE id = ?";
+        $requestPrepared = $this->db->prepare($request);
+
+        $this->db->beginTransaction();
+        try {
+            foreach ($rows as $row) {
+                $requestPrepared->bindValue(1, $row->ressource);
+                $requestPrepared->bindValue(2, $row->exam);
+                $requestPrepared->bindValue(3, $row->id);
+                $requestPrepared->execute();
+            }
+            $this->db->commit();
+            return true;
+        } catch (\PDOException $exception) {
+            $this->db->rollBack();
+            echo 'Erreur: ' . $exception->getMessage();
+            return false;
+        }
+    }
+
+    public function findSubjectClasse($ids)
+    {
+        $request = "SELECT
+                    Classe.label AS classe,
+                    Subject.label AS discipline,
+                    Subject_Classe.ressource AS ressource,
+                    Subject_Classe.examen AS examen
+                FROM
+                    Subject_Classe
+                    JOIN Subject ON Subject.id = Subject_Classe.id_subject
+                    JOIN Classe ON Classe.id = Subject_Classe.id_classe
+                WHERE Subject_Classe.id IN ($ids)";
+        $requestPrepared = $this->db->prepare($request);
+        $requestPrepared->execute();
+        return $requestPrepared->fetchAll(\PDO::FETCH_OBJ);
     }
 }

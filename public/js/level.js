@@ -11,12 +11,12 @@ btnAddLevel.addEventListener('click', () => {
     form.classList.remove('opacity-0');
     form.classList.remove('-right-80');
     form.classList.add('opacity-100');
-    form.classList.add('right-16');
+    form.classList.add('right-7');
 })
 
 btnCloseModal.addEventListener('click', () => {
     form.classList.remove('opacity-100');
-    form.classList.remove('right-16');
+    form.classList.remove('right-7');
     form.classList.add('-right-80');
     form.classList.add('opacity-0');
 })

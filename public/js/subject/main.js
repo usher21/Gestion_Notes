@@ -1,11 +1,11 @@
-import { fetchData, createElement } from "./api.js";
+import { fetchData, createElement, fetchDataText } from "./api.js";
 
 import {
     clearTextElement, clearElementContainer,
     handleSubjectAdd, handleSubjectGet, handleSubjectGroupAdd,
-    subjectValidator, getFormData
+    subjectValidator, getFormData, activeAlert
 }
-    from
+from
     "./util.js";
 
 const selectLevel = document.querySelector('#select-level');
@@ -20,6 +20,7 @@ const newSubjectGroup = document.querySelector('#new-subject-group');
 const addNewSubject = document.querySelector('#add-new-subject');
 const subjectInput = document.querySelector('#subject');
 const btnUpdate = document.querySelector('#btn-update');
+const alertContainer = document.querySelector('.alert');
 
 const subjectGroupForm = document.querySelector('#subject-group-form');
 const subjectGroupFormContainer = document.querySelector('#subject-group-form-container');
@@ -62,6 +63,17 @@ selectClasse.addEventListener('change', async function () {
 
     clearTextElement(classeError);
     clearElementContainer(subjectGroupContainer);
+
+    if (this.selectedIndex === 0) {
+        subjectTitle.innerText = '';
+        deletedInfo.classList.add('hidden');
+        subjectGroupContainer.innerHTML = `
+            <div class="text-xl text-cyan-700 text-center w-full flex item-center justify-center">
+                Choisir une classe pour afficher ses discipline ici
+            </div>`;
+        return;
+    }
+    
     subjectTitle.innerText = 'Les disciplines de la classe de ' + this.selectedOptions[0].innerText;
 
     const subjectGroups = await fetchData(HOST + GET_SUBJECT + idClasse, { method: 'GET' });
@@ -121,6 +133,12 @@ addNewSubject.addEventListener('click', async function () {
     const formData = getFormData(idClasse, idGroup, subjectInput.value);
     const newSubject = await fetchData(HOST + ADD_SUBJECT, { method: 'POST', body: formData });
 
+    if (newSubject.statusCode === 200) {
+        const className = selectClasse.selectedOptions[0].value;
+        activeAlert(alertContainer, className + ': mise à jour efféctuée', newSubject.message);
+        subjectInput.value = "";
+    }
+
     handleSubjectAdd(newSubject, idClasse, subjectGroupContainer, subjectError, { HOST, GET_SUBJECT }, btnUpdate);
 })
 
@@ -142,10 +160,20 @@ btnUpdate.addEventListener('click', async () => {
         const id = +uncheckedSubject.getAttribute("data-id");
         idSubjects.push(id);
     })
-    
+
     const formData = new FormData;
     formData.append('idSubjects', idSubjects);
 
     const response = await fetchData(HOST + DEL_SUBJECT + idClasse, { method: 'POST', body: formData });
-    console.log(response);
+    if (response.statusCode === 200) {
+        const subjectGroups = await fetchData(HOST + GET_SUBJECT + idClasse, { method: 'GET' });
+        const className = selectClasse.selectedOptions[0].value;
+        activeAlert(alertContainer, className + ': mise à jour efféctuée', response.message);
+        handleSubjectGet(subjectGroups, subjectGroupContainer, deletedInfo, btnUpdate);
+        btnUpdate.disabled = true;
+    }
 })
+
+
+
+

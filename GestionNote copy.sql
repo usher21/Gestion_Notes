@@ -429,6 +429,8 @@ CREATE TABLE IF NOT EXISTS `Subject_Classe`(
     Foreign Key (`id_subject`) REFERENCES Subject(`id`),
     Foreign Key (`id_classe`) REFERENCES Classe(`id`)
 );
+ALTER TABLE Subject_Classe ADD ressource INT DEFAULT 0;
+ALTER TABLE Subject_Classe ADD examen INT DEFAULT 0;
 
 INSERT INTO
     `Subject_Classe`(`id_subject`, `id_classe`)
